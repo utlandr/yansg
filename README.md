@@ -1,4 +1,4 @@
-# SNAKE
+# Yet Another Snake Game
 
-Learning ncurses and having fun. My snake going to be red. 
+Mine will be red.
 
