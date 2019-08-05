@@ -1,0 +1,5 @@
+# Ignore game binary
+snake
+
+# vim restore/backup files
+**.sw*
