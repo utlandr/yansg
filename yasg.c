@@ -21,6 +21,12 @@ struct GAME_SCREEN {
     WINDOW* map_window;
 };
 
+typedef struct SNAKE {
+    int id;
+    WINDOW* body;
+    struct SNAKE *next;
+} snake;
+
 // Create a window
 WINDOW* init_window(int edge, int corn, int start_x, int start_y, int height, int width) {
     WINDOW* win = newwin(height, width, start_x, start_y);
@@ -85,10 +91,10 @@ int main(void) {
     wattron(g_win.map_window,COLOR_PAIR(1));
 
     keypad(g_win.map_window, TRUE);
+    nodelay(g_win.map_window, TRUE);
     while(1) {
         wrefresh(g_win.map_window);
         c = wgetch(g_win.map_window);
-        wclear(g_win.map_window);
 		switch(c){
             case KEY_UP:
                 y--;
@@ -99,15 +105,14 @@ int main(void) {
 				break;
 
 			case KEY_LEFT:
-                x--;
+                x-=2;
                 break;
 
             case KEY_RIGHT:
-                x++;
+                x+=2;
                 break;
-                
         }
-        mvwprintw(g_win.map_window,y,x," ");
+        mvwprintw(g_win.map_window,y,x,"  ");
     }
     wattroff(g_win.map_window, COLOR_PAIR(1));
 
