@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <ncurses.h>
 #include <string.h>
 
@@ -62,17 +63,28 @@ struct GAME_SCREEN init_game() {
 
 int main(void) {
     initscr(); //set up memory and clear screen
+
+    if (has_colors() == FALSE) {
+        endwin();
+        printf("Your terminal does not support color\n");
+        exit(1);
+    }
+    start_color();
+    use_default_colors();
     curs_set(0);
     cbreak();
     noecho();
+
 
     // Initialize the windows and scoreboard
     struct GAME_SCREEN g_win = init_game();
     int c, x, y;
     x = y = 10;
     
-    keypad(g_win.map_window, TRUE);
+    init_pair(1, COLOR_RED, COLOR_RED);
+    wattron(g_win.map_window,COLOR_PAIR(1));
 
+    keypad(g_win.map_window, TRUE);
     while(1) {
         wrefresh(g_win.map_window);
         c = wgetch(g_win.map_window);
@@ -80,25 +92,24 @@ int main(void) {
 		switch(c){
             case KEY_UP:
                 y--;
-                mvwprintw(g_win.map_window,y,x,"0");
                 break;
 
 			case KEY_DOWN:
                 y++;
-                mvwprintw(g_win.map_window,y,x,"0");
 				break;
 
 			case KEY_LEFT:
                 x--;
-                mvwprintw(g_win.map_window,y,x,"0");
                 break;
 
             case KEY_RIGHT:
                 x++;
-                mvwprintw(g_win.map_window,y,x,"0");
                 break;
+                
         }
+        mvwprintw(g_win.map_window,y,x," ");
     }
+    wattroff(g_win.map_window, COLOR_PAIR(1));
 
     endwin(); //de-allocate and end ncurses
     
