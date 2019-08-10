@@ -1,4 +1,4 @@
-CFLAGS=-g
+CFLAGS=-g -c -Wall -Iinclude
 LDFLAGS=-g
 LDLIBS=-lncurses
 
