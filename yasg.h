@@ -1,7 +1,7 @@
-#include <ncurses.h>
-#include <string.h>
-#include <time.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ncurses.h>
+#include <time.h>
 
 // I'm gonna be wrong and say that this is how one should setup config
 // global variables for a game
@@ -16,13 +16,14 @@ int CORN = (int)'*';                        // Main window corner char
 int G_EDGE = 0;                             // Game window edge char
 int G_CORN = (int)'*';                      // Game window corner char
 
+// Game screen windows
 struct GAME_SCREEN {
     WINDOW* main_window;
     WINDOW* game_window;
     WINDOW* map_window;
 };
 
-
+// Snake 
 typedef struct SNAKE {
     int id;
     WINDOW* body;
@@ -69,6 +70,7 @@ struct GAME_SCREEN init_game() {
 
 }
 
+// sub method for generatin random start positions
 int get_int_from_range(int l_bound, int u_bound) {
     srand(time(0));
     int rand_int = (rand() % (u_bound - l_bound + 1)) + l_bound;
@@ -76,11 +78,11 @@ int get_int_from_range(int l_bound, int u_bound) {
 }
 
 void rand_coords(WINDOW* win, int* y_start, int* x_start) {
-    int x_max, y_max;
+    int x_max, y_max, x_rand, y_rand;
     getmaxyx(win, y_max, x_max);
     
-    int y_rand = get_int_from_range(1, y_max-1);
-    int x_rand = get_int_from_range(1, x_max-1);
+    y_rand = get_int_from_range(1, y_max-1);
+    x_rand = get_int_from_range(1, x_max-1);
     
     *y_start = y_rand;
     *x_start = x_rand;
