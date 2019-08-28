@@ -12,18 +12,21 @@ CFLAGS=-g -Wall
 # LESSON: libs have to be specified at the end
 LDLIBS=-lncurses
 
+# Specify base rm command
+RM=rm -f
+
 # Build executable from object file
 yasg: yasg.o
-	$(CC) $(CFLAGS) -o yasg yasg.o $(LDLIBS) 
+	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS) 
 
 # To build the object file, we need to compile the source files
 yasg.o: yasg.c yasg.h
-	$(CC) $(CFLAGS) -c yasg.c yasg.h $(LDLIBS) 
+	$(CC) $(CFLAGS) -c $^ $(LDLIBS) 
 
 # Cleanup everything (executable and object files)
 clean:
-	rm -f yasg 
-	rm -f *.o 	
-	rm -f *~ 	
-	rm -f *.gch 	
+	$(RM) yasg 
+	$(RM) *.o 	
+	$(RM) *~ 	
+	$(RM) *.gch 	
 
