@@ -4,3 +4,5 @@ yasg
 # vim restore/backup files
 **.sw*
 junk.c
+yasg.o
+yasg.h.gch
