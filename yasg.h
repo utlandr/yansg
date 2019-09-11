@@ -5,7 +5,7 @@
 
 // I'm gonna be wrong and say that this is how one should setup config
 // global variables for a game
-char TITLE[]=" Yet Another Snake Game ";     // Game title
+char TITLE[] = " Yet Another Snake Game ";     // Game title
 int SCOREBOARD_LEN = 4;                     // Absolute scoreboard length
 
 int START_X = 0;                            // Main window start x
@@ -16,6 +16,8 @@ int CORN = (int)'*';                        // Main window corner char
 int G_EDGE = 0;                             // Game window edge char
 int G_CORN = (int)'*';                      // Game window corner char
 
+int SNAKE_START_LEN = 3;
+
 // Game screen windows
 struct GAME_SCREEN {
     WINDOW* main_window;
@@ -24,11 +26,13 @@ struct GAME_SCREEN {
 };
 
 // Snake 
-typedef struct SNAKE {
+struct SNAKE {
     int id;
+    int y_pos;
+    int x_pos;
     WINDOW* body;
     struct SNAKE* next;
-} snake;
+};
 
 // Create a window
 WINDOW* init_window(int edge, int corn, int start_x, int start_y, int height, int width) {
@@ -66,7 +70,7 @@ struct GAME_SCREEN init_game() {
     // Create empty map inside game window
     g_win.map_window = init_window((int)' ', (int)' ', y_game_start + 1, x_game_start + 1, game_len - 2, game_wid - 2); 
 
-    return(g_win);
+    return(g_win) ;
 
 }
 
@@ -86,4 +90,33 @@ void rand_coords(WINDOW* win, int* y_start, int* x_start) {
     
     *y_start = y_rand;
     *x_start = x_rand;
+}
+
+struct SNAKE* init_snake(WINDOW* game_win, int y_start, int x_start, int start_len) {
+    struct SNAKE* head;
+    struct SNAKE* main;
+    struct SNAKE* conveyor;
+    
+    // Create the head
+    main = (struct SNAKE*)malloc(sizeof(struct SNAKE));
+    head = main;
+
+    // I think I am being naughty here as I haven't been
+    // able to find a creditable source online in which 
+    // someone has created a linked list from a for loop. 
+    // Might have to do with the fact that 
+    // anyone could change the 'start_len' to some atrocious
+    // number which might lead to memory overflow. 
+    for(int i=1; i<start_len; i++) {
+        conveyor = (struct SNAKE*)malloc(sizeof(struct SNAKE));
+        main->id = i;
+        main->y_pos = y_start;
+        main->x_pos = x_start + 2*i;
+        main->body = subwin(game_win, 1, 2, y_start, x_start + 2*i); 
+        wattron(main->body, COLOR_PAIR(1));
+        main->next = conveyor;
+
+        main = main->next;
+    }
+    return head;
 }

@@ -24,12 +24,15 @@ int main(void) {
     struct GAME_SCREEN g_win = init_game();
     int c, x, y;
     rand_coords(g_win.map_window, &y, &x);    
-    
+
+    // Initialize the snake
+    struct SNAKE* g_snake = init_snake(g_win.map_window, y, x, SNAKE_START_LEN);
+
     // Snake movement and coloring
     keypad(g_win.map_window, TRUE);
     nodelay(g_win.map_window, TRUE);
     init_pair(1, COLOR_BLACK, COLOR_RED);
-    wattron(g_win.map_window,COLOR_PAIR(1));
+    wattron(g_win.map_window, COLOR_PAIR(1));
 
     do {
         mvwprintw(g_win.map_window, 0, 0, "%i is x and %i is y", x, y);
@@ -53,7 +56,8 @@ int main(void) {
                 x+=2;
                 break;
         }
-        mvwprintw(g_win.map_window,y,x,"  ");
+        // no printing of snake
+        // mvwprintw(g_win.map_window, y, x, "  ");
     } while(1);
     wattroff(g_win.map_window, COLOR_PAIR(1));
 
