@@ -25,7 +25,6 @@ yasg.o: yasg.c yasg.h
 
 # Cleanup everything (executable and object files)
 clean:
-	$(RM) yasg 
 	$(RM) *.o 	
 	$(RM) *~ 	
 	$(RM) *.gch 	
