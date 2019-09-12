@@ -94,12 +94,12 @@ void rand_coords(WINDOW* win, int* y_start, int* x_start) {
 
 struct SNAKE* init_snake(WINDOW* game_win, int y_start, int x_start, int start_len) {
     struct SNAKE* head;
-    struct SNAKE* main;
+    struct SNAKE* section;
     struct SNAKE* conveyor;
     
     // Create the head
-    main = (struct SNAKE*)malloc(sizeof(struct SNAKE));
-    head = main;
+    section = (struct SNAKE*)malloc(sizeof(struct SNAKE));
+    head = section;
 
     // I think I am being naughty here as I haven't been
     // able to find a creditable source online in which 
@@ -107,16 +107,18 @@ struct SNAKE* init_snake(WINDOW* game_win, int y_start, int x_start, int start_l
     // Might have to do with the fact that 
     // anyone could change the 'start_len' to some atrocious
     // number which might lead to memory overflow. 
-    for(int i=1; i<start_len; i++) {
+    for(int i=0; i<start_len; i++) {
+        // Assign memory for the next snake section
         conveyor = (struct SNAKE*)malloc(sizeof(struct SNAKE));
-        main->id = i;
-        main->y_pos = y_start;
-        main->x_pos = x_start + 2*i;
-        main->body = subwin(game_win, 1, 2, y_start, x_start + 2*i); 
-        wattron(main->body, COLOR_PAIR(1));
-        main->next = conveyor;
-
-        main = main->next;
+        section->id = i;
+        section->y_pos = y_start;
+        section->x_pos = x_start + 2*i;
+        section->body = subwin(game_win, 1, 2, y_start, x_start + 2*i); 
+        
+        // Assign color to the body and next section to work on
+        wattron(section->body, COLOR_PAIR(1));
+        section->next = conveyor;
+        section = section->next;
     }
     return head;
 }
