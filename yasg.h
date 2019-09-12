@@ -115,8 +115,12 @@ struct SNAKE* init_snake(WINDOW* game_win, int y_start, int x_start, int start_l
         section->x_pos = x_start + 2*i;
         section->body = subwin(game_win, 1, 2, y_start, x_start + 2*i); 
         
-        // Assign color to the body and next section to work on
+        // Assign color to the body
         wattron(section->body, COLOR_PAIR(1));
+        mvwprintw(section->body, 0, 0, "  ");
+        wattroff(section->body, COLOR_PAIR(1));
+
+        // Next section
         section->next = conveyor;
         section = section->next;
     }
