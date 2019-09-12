@@ -17,18 +17,21 @@ int main(void) {
     }
 
     curs_set(0);
-    cbreak();
+    halfdelay(10);
     noecho();
 
     // Initialize the windows and scoreboard
     struct GAME_SCREEN g_win = init_game();
-    int c, x, y;
+    int user_in, x, y;
+    char snake_dir = 'N'; 
+
+    // Retrieve random start point
     rand_coords(g_win.map_window, &y, &x);    
 
     // Initialize the snake
     struct SNAKE* g_snake = init_snake(g_win.map_window, y, x, SNAKE_START_LEN);
 
-    // Snake movement and coloring
+    // Snake movement and coloring TODO: Maybe put in a method/something better
     keypad(g_win.map_window, TRUE);
     nodelay(g_win.map_window, TRUE);
     init_pair(1, COLOR_BLACK, COLOR_RED);
@@ -37,27 +40,46 @@ int main(void) {
     do {
         mvwprintw(g_win.map_window, 0, 0, "%i is x and %i is y", x, y);
         wrefresh(g_win.map_window);
-        c = wgetch(g_win.map_window);
+        user_in = wgetch(g_win.map_window);
 
-		switch(c){
+		switch(user_in){
             case KEY_UP:
-                y--;
+                snake_dir = 'U';
                 break;
 
 			case KEY_DOWN:
-                y++;
+                snake_dir = 'D';
 				break;
 
 			case KEY_LEFT:
-                x-=2;
+                snake_dir = 'L';
                 break;
 
             case KEY_RIGHT:
-                x+=2;
+                snake_dir = 'R';
                 break;
         }
-        // no printing of snake
-        // mvwprintw(g_win.map_window, y, x, "  ");
+        
+        switch(snake_dir) {
+            case 'N':
+                break;
+
+            case 'U':
+                y++;
+                break;
+
+            case 'D':
+                y--;
+                break;
+
+            case 'L':
+                x--;
+                break;
+
+            case 'R':
+                x++;
+                break;
+        }
     } while(1);
     wattroff(g_win.map_window, COLOR_PAIR(1));
 
