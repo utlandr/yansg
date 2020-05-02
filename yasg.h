@@ -150,10 +150,20 @@ void snake_movement_update(struct SNAKE* head, int y, int x) {
         current->y_pos = y;
         current->x_pos = x;
 
-        wattron(current->body, COLOR_PAIR(1));
+        if(i==0) {
+            wattron(current->body, COLOR_PAIR(2));
+        } else {
+            wattron(current->body, COLOR_PAIR(1));
+        }
+
         mvwprintw(current->body, 0, 0, "  ");
         mvderwin(current->body, y, x);
-        wattroff(current->body, COLOR_PAIR(1));
+
+        if(i==0) {
+            wattroff(current->body, COLOR_PAIR(2));
+        } else {
+            wattroff(current->body, COLOR_PAIR(1));
+        }
 
         y = y_tmp;
         x = x_tmp;

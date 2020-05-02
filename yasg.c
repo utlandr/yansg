@@ -35,6 +35,7 @@ int main(void) {
     keypad(g_win.map_window, TRUE);
     nodelay(g_win.map_window, TRUE);
     init_pair(1, COLOR_BLACK, COLOR_RED);
+    init_pair(2, COLOR_BLACK, COLOR_YELLOW);
     wattron(g_win.map_window, COLOR_PAIR(1));
 
     do {
