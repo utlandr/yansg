@@ -17,7 +17,7 @@ int main(void) {
     }
 
     curs_set(0);
-    halfdelay(10);
+    halfdelay(1);
     noecho();
 
     // Initialize the windows and scoreboard
@@ -38,8 +38,6 @@ int main(void) {
     wattron(g_win.map_window, COLOR_PAIR(1));
 
     do {
-        mvwprintw(g_win.map_window, 0, 0, "%i is x and %i is y", x, y);
-        wrefresh(g_win.map_window);
         user_in = wgetch(g_win.map_window);
 
 		switch(user_in){
@@ -65,21 +63,26 @@ int main(void) {
                 break;
 
             case 'U':
-                y++;
-                break;
-
-            case 'D':
                 y--;
                 break;
 
+            case 'D':
+                y++;
+                break;
+
             case 'L':
-                x--;
+                x-=2;
                 break;
 
             case 'R':
-                x++;
+                x+=2;
                 break;
         }
+
+        // update snake position
+        mvwprintw(g_win.map_window, 0, 0, "%i is x and %i is y", x, y);
+        snake_movement_update(g_snake, y, x);
+
     } while(1);
     wattroff(g_win.map_window, COLOR_PAIR(1));
 

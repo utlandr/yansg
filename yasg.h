@@ -113,7 +113,7 @@ struct SNAKE* init_snake(WINDOW* game_win, int y_start, int x_start, int start_l
         section->id = i;
         section->y_pos = y_start;
         section->x_pos = x_start + 2*i;
-        section->body = subwin(game_win, 1, 2, y_start, x_start + 2*i); 
+        section->body = derwin(game_win, 1, 2, y_start, x_start + 2*i); 
         
         // Assign color to the body
         wattron(section->body, COLOR_PAIR(1));
@@ -126,3 +126,44 @@ struct SNAKE* init_snake(WINDOW* game_win, int y_start, int x_start, int start_l
     }
     return head;
 }
+
+int get_snake_len(struct SNAKE* head) {
+    int count = 0;
+    struct SNAKE* current = head;
+    
+    while(current != NULL) {
+        count++;
+        current=current->next;
+    }
+    return count;
+}
+
+void snake_movement_update(struct SNAKE* head, int y, int x) {
+    int x_tmp, y_tmp;
+    struct SNAKE* current = head;
+
+    for(int i=0; i<get_snake_len(head); i++) {
+        touchwin(current->body);
+        y_tmp = current->y_pos;
+        x_tmp = current->x_pos;
+
+        current->y_pos = y;
+        current->x_pos = x;
+
+        wattron(current->body, COLOR_PAIR(1));
+        mvwprintw(current->body, 0, 0, "  ");
+        mvderwin(current->body, y, x);
+        wattroff(current->body, COLOR_PAIR(1));
+
+        y = y_tmp;
+        x = x_tmp;
+
+        current = current->next;
+
+    }
+    
+
+    
+    return;
+}
+
