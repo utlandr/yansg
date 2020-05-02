@@ -27,16 +27,17 @@ int main(void) {
 
     // Retrieve random start point
     rand_coords(g_win.map_window, &y, &x);    
-
-    // Initialize the snake
-    struct SNAKE* g_snake = init_snake(g_win.map_window, y, x, SNAKE_START_LEN);
-
+    
     // Snake movement and coloring TODO: Maybe put in a method/something better
     keypad(g_win.map_window, TRUE);
     nodelay(g_win.map_window, TRUE);
     init_pair(1, COLOR_BLACK, COLOR_RED);
     init_pair(2, COLOR_BLACK, COLOR_YELLOW);
-    wattron(g_win.map_window, COLOR_PAIR(1));
+
+    // Initialize the snake
+    struct SNAKE* g_snake = init_snake(g_win.map_window, y, x, SNAKE_START_LEN);
+
+    //wattron(g_win.map_window, COLOR_PAIR(1));
 
     do {
         user_in = wgetch(g_win.map_window);
@@ -65,27 +66,30 @@ int main(void) {
 
             case 'U':
                 y--;
+                snake_movement_update(g_snake, y, x);
                 break;
 
             case 'D':
                 y++;
+                snake_movement_update(g_snake, y, x);
                 break;
 
             case 'L':
                 x-=2;
+                snake_movement_update(g_snake, y, x);
                 break;
 
             case 'R':
                 x+=2;
+                snake_movement_update(g_snake, y, x);
                 break;
         }
 
         // update snake position
         mvwprintw(g_win.map_window, 0, 0, "%i is x and %i is y", x, y);
-        snake_movement_update(g_snake, y, x);
 
     } while(1);
-    wattroff(g_win.map_window, COLOR_PAIR(1));
+    //wattroff(g_win.map_window, COLOR_PAIR(1));
 
     endwin(); //de-allocate and end ncurses
     return(0);
